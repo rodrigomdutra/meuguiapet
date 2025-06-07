@@ -1,0 +1,4 @@
+# Mark assets, research directories and project-case.md as vendored (excluded from language statistics)
+/assets/** linguist-vendored
+/research/** linguist-vendored
+project-case.md linguist-vendored 

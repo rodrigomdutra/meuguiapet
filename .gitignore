@@ -36,3 +36,8 @@ Thumbs.db
 
 # Local Netlify folder
 .netlify 
+
+# Private Project Files
+/assets/
+/research/
+project-case.md 
