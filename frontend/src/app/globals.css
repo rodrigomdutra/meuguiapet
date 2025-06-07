@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-white text-gray-800 antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold leading-tight;
+  }
+  h1 {
+    @apply text-3xl md:text-4xl;
+  }
+  h2 {
+    @apply text-2xl md:text-3xl;
+  }
+  h3 {
+    @apply text-xl md:text-2xl;
+  }
+}
+
+@layer components {
+  /* Button styles */
+  .btn-primary {
+    @apply px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:ring-2 focus:ring-blue-300 focus:outline-none transition-colors;
+  }
+  
+  .btn-secondary {
+    @apply px-4 py-2 bg-white text-blue-500 border border-blue-500 rounded hover:bg-blue-50 focus:ring-2 focus:ring-blue-300 focus:outline-none transition-colors;
+  }
+  
+  /* Card styles */
+  .card {
+    @apply bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition;
+  }
+  
+  /* Badge styles */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+  
+  .badge-green {
+    @apply bg-green-100 text-green-800;
+  }
+  
+  .badge-blue {
+    @apply bg-blue-100 text-blue-800;
+  }
+  
+  /* Link styles */
+  .link {
+    @apply text-blue-600 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-300 rounded;
+  }
+}
+
+@layer utilities {
+  /* Additional responsive text utilities */
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  /* Gradient text utility */
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r;
+  }
+  
+  .text-gradient-blue {
+    @apply text-gradient from-blue-600 to-cyan-500;
+  }
+  
+  /* Grid auto-fit for responsive grid layouts */
+  .grid-auto-fit {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+} 
