@@ -1,0 +1,97 @@
+---
+description: This rule explains Tailwind CSS conventions, utility classes, and best practices for modern UI development.
+globs: **/*.js,**/*.ts,**/*.tsx,**/*.css
+alwaysApply: false
+---
+
+# Tailwind CSS rules
+
+- Use responsive prefixes for mobile-first design:
+
+```html
+<div className="w-full md:w-1/2 lg:w-1/3">
+  <!-- Full width on mobile, half on medium, one-third on large screens -->
+</div>
+```
+
+- Use state variants for interactive elements:
+
+```html
+<button className="bg-blue-500 hover:bg-blue-600 focus:ring-2">
+  Click me
+</button>
+```
+
+- Use @apply for repeated patterns when necessary:
+
+```css
+@layer components {
+  .btn-primary {
+    @apply px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600;
+  }
+}
+```
+
+- Use arbitrary values for specific requirements:
+
+```html
+<div className="top-[117px] grid-cols-[1fr_2fr]">
+  <!-- Custom positioning and grid layout -->
+</div>
+```
+
+- Use spacing utilities for consistent layout:
+
+```html
+<div className="space-y-4">
+  <div>Item 1</div>
+  <div>Item 2</div>
+</div>
+```
+
+## Custom Components
+
+We've defined the following custom component classes in our project:
+
+### Buttons
+```html
+<button className="btn-primary">Primary Button</button>
+<button className="btn-secondary">Secondary Button</button>
+```
+
+### Cards
+```html
+<div className="card">Card content</div>
+```
+
+### Badges
+```html
+<span className="badge badge-green">Badge</span>
+<span className="badge badge-blue">Badge</span>
+```
+
+### Links
+```html
+<a className="link">Link text</a>
+```
+
+## Custom Utilities
+
+We've added custom utilities that can be used throughout the project:
+
+- Text gradient: `text-gradient-blue`
+- Scale on hover: `scale-hover`
+- Rotate on hover: `rotate-hover`
+- Text shadow: `text-shadow`, `text-shadow-lg`
+
+## Theme Configuration
+
+Our custom theme is defined in `src/styles/theme.ts` and includes:
+
+- Custom colors (brand colors, pet-blue, pet-green, etc.)
+- Custom font families (sans, display)
+- Custom spacing values (128, 144)
+- Custom shadows (soft, card)
+- Custom animations (fade-in, slide-up)
+
+Please refer to the theme file for the complete list of customizations. 
