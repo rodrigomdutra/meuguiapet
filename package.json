@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "cd frontend && npm run dev",
-    "build": "cd frontend && npm install && npm run build",
+    "build": "cd frontend && npm install --no-package-lock && npm run build",
     "start": "cd frontend && npm start",
     "lint": "cd frontend && npm run lint"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": "18.x",
+    "npm": "9.x"
   }
 } 
