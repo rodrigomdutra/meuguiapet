@@ -2,9 +2,9 @@ import { createClient } from 'next-sanity';
 import imageUrlBuilder from '@sanity/image-url';
 import { SanityImageSource } from '@sanity/image-url/lib/types/types';
 
-export const projectId = 'lva42j9i';
-export const dataset = 'production';
-export const apiVersion = '2023-05-03';
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'your-project-id';
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
+const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2023-05-03';
 
 export const client = createClient({
   projectId,
@@ -160,4 +160,107 @@ export async function getFeaturedContent() {
   }`;
   
   return await client.fetch(query);
-} 
+}
+
+// Queries
+export const categoriesQuery = `*[_type == "category"] | order(title asc) {
+  _id,
+  title,
+  slug,
+  description,
+  image
+}`;
+
+export const categoryBySlugQuery = `*[_type == "category" && slug.current == $slug][0] {
+  _id,
+  title,
+  slug,
+  description,
+  image
+}`;
+
+export const articlesByCategory = `*[_type == "article" && references($categoryId)] | order(publishedAt desc) {
+  _id,
+  title,
+  slug,
+  excerpt,
+  mainImage,
+  categories[]->{_id, title, slug},
+  expert->{_id, name, role, image},
+  publishedAt,
+  expertValidated
+}`;
+
+export const articleBySlugQuery = `*[_type == "article" && slug.current == $slug][0] {
+  _id,
+  title,
+  slug,
+  excerpt,
+  mainImage,
+  content,
+  categories[]->{_id, title, slug},
+  expert->{_id, name, role, image, bio},
+  publishedAt,
+  expertValidated,
+  "relatedArticles": *[_type == "article" && references(^.categories[]._id) && _id != ^._id][0...3] {
+    _id,
+    title,
+    slug,
+    excerpt,
+    mainImage,
+    categories[]->{_id, title, slug},
+    publishedAt
+  }
+}`;
+
+export const expertsQuery = `*[_type == "specialist"] | order(name asc) {
+  _id,
+  name,
+  slug,
+  role,
+  image,
+  bio
+}`;
+
+export const expertByIdQuery = `*[_type == "specialist" && _id == $id][0] {
+  _id,
+  name,
+  slug,
+  role,
+  image,
+  bio,
+  "articles": *[_type == "article" && references(^._id)] {
+    _id,
+    title,
+    slug,
+    excerpt,
+    mainImage,
+    categories[]->{_id, title, slug},
+    publishedAt
+  }
+}`;
+
+// Queries for the home page
+export const featuredArticlesQuery = `*[_type == "article" && defined(mainImage)] | order(publishedAt desc)[0...6] {
+  _id,
+  title,
+  slug,
+  excerpt,
+  mainImage,
+  categories[]->{_id, title, slug},
+  expert->{_id, name, role},
+  publishedAt,
+  expertValidated
+}`;
+
+export const recentArticlesQuery = `*[_type == "article"] | order(publishedAt desc)[0...9] {
+  _id,
+  title,
+  slug,
+  excerpt,
+  mainImage,
+  categories[]->{_id, title, slug},
+  expert->{_id, name, role},
+  publishedAt,
+  expertValidated
+}`; 

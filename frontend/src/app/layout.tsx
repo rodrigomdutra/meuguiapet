@@ -1,13 +1,56 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import Link from 'next/link';
+import { Montserrat, Source_Sans_3 } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
+import { Suspense } from "react";
+
+import Header from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-montserrat",
+});
+
+const sourceSans = Source_Sans_3({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-source-sans",
+});
 
 export const metadata: Metadata = {
-  title: 'Meu Guia Pet',
-  description: 'Conteúdo de qualidade sobre cuidados com pets, validado por especialistas veterinários.',
+  title: {
+    default: "meuguia.pet | Conteúdo Pet Brasileiro com Validação Científica",
+    template: "%s | meuguia.pet",
+  },
+  description:
+    "A primeira plataforma de conteúdo pet genuinamente brasileira, com validação científica e contextualização local.",
+  openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    url: "https://meuguia.pet",
+    siteName: "meuguia.pet",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "meuguia.pet - Conteúdo Pet Brasileiro",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "meuguia.pet | Conteúdo Pet Brasileiro com Validação Científica",
+    description:
+      "A primeira plataforma de conteúdo pet genuinamente brasileira, com validação científica e contextualização local.",
+    images: ["/og-image.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
@@ -16,122 +59,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR">
-      <body className={inter.className}>
-        <header className="bg-white shadow-sm">
-          <div className="container mx-auto px-4">
-            <div className="flex items-center justify-between py-4">
-              <Link href="/" className="text-2xl font-bold text-blue-600">
-                MeuGuia.Pet
-              </Link>
-              
-              <nav className="hidden md:flex gap-6">
-                <Link href="/" className="font-medium hover:text-blue-600">
-                  Home
-                </Link>
-                <Link href="/artigos" className="font-medium hover:text-blue-600">
-                  Artigos
-                </Link>
-                <Link href="/categorias" className="font-medium hover:text-blue-600">
-                  Categorias
-                </Link>
-                <Link href="/especialistas" className="font-medium hover:text-blue-600">
-                  Especialistas
-                </Link>
-                <Link href="/exemplos" className="font-medium hover:text-blue-600">
-                  Exemplos Tailwind
-                </Link>
-              </nav>
-              
-              <div className="md:hidden">
-                {/* Mobile menu button */}
-                <button className="p-2">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-          
-          {/* Mobile menu (simplified, would need JS for toggle functionality) */}
-          <div className="hidden md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              <Link href="/" className="block px-3 py-2 rounded-md font-medium hover:bg-blue-50 hover:text-blue-600">
-                Home
-              </Link>
-              <Link href="/artigos" className="block px-3 py-2 rounded-md font-medium hover:bg-blue-50 hover:text-blue-600">
-                Artigos
-              </Link>
-              <Link href="/categorias" className="block px-3 py-2 rounded-md font-medium hover:bg-blue-50 hover:text-blue-600">
-                Categorias
-              </Link>
-              <Link href="/especialistas" className="block px-3 py-2 rounded-md font-medium hover:bg-blue-50 hover:text-blue-600">
-                Especialistas
-              </Link>
-              <Link href="/exemplos" className="block px-3 py-2 rounded-md font-medium hover:bg-blue-50 hover:text-blue-600">
-                Exemplos Tailwind
-              </Link>
-            </div>
-          </div>
-        </header>
-        
-        {children}
-        
-        <footer className="bg-gray-900 text-white py-12">
-          <div className="container mx-auto px-4">
-            <div className="grid gap-8 md:grid-cols-3">
-              <div>
-                <h3 className="text-xl font-bold mb-4">MeuGuia.Pet</h3>
-                <p className="text-gray-400 mb-4">
-                  Conteúdo de qualidade sobre cuidados com pets, validado por especialistas veterinários.
-                </p>
-              </div>
-              
-              <div>
-                <h3 className="text-lg font-bold mb-4">Links Rápidos</h3>
-                <ul className="space-y-2">
-                  <li>
-                    <Link href="/" className="text-gray-400 hover:text-white">
-                      Home
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/artigos" className="text-gray-400 hover:text-white">
-                      Artigos
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/categorias" className="text-gray-400 hover:text-white">
-                      Categorias
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/especialistas" className="text-gray-400 hover:text-white">
-                      Especialistas
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/exemplos" className="text-gray-400 hover:text-white">
-                      Exemplos Tailwind
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-              
-              <div>
-                <h3 className="text-lg font-bold mb-4">Contato</h3>
-                <p className="text-gray-400 mb-2">
-                  contato@meuguia.pet
-                </p>
-              </div>
-            </div>
-            
-            <div className="border-t border-gray-800 mt-8 pt-8 text-gray-400 text-sm">
-              <p>© {new Date().getFullYear()} MeuGuia.Pet. Todos os direitos reservados.</p>
-            </div>
-          </div>
-        </footer>
+    <html lang="pt-BR" className={`${montserrat.variable} ${sourceSans.variable}`}>
+      <body className="flex flex-col min-h-screen">
+        <Suspense fallback={<div>Loading...</div>}>
+          <Header />
+          <main className="flex-grow">{children}</main>
+          <Footer />
+        </Suspense>
+        <Analytics />
       </body>
     </html>
   );
