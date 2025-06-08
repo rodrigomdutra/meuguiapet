@@ -1,11 +1,31 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getFeaturedContent, urlFor } from '@/lib/sanity';
+import { client, urlFor, categoriesQuery, featuredArticlesQuery } from '@/lib/sanity';
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import FeaturedArticle from "@/components/home/featured-article"
 import CategoryCard from "@/components/home/category-card"
+
+// Define interfaces for type safety
+interface Category {
+  _id: string;
+  title: string;
+  description?: string;
+  image?: any;
+  slug: { current: string };
+}
+
+interface Article {
+  _id: string;
+  title: string;
+  excerpt?: string;
+  mainImage?: any;
+  categories?: { title: string }[];
+  slug: { current: string };
+  expertValidated?: boolean;
+  expert?: { name?: string; role?: string };
+}
 
 export const metadata: Metadata = {
   title: 'Meu Guia Pet - Conteúdo de qualidade sobre cuidados com pets',
@@ -93,11 +113,11 @@ export default async function Home() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {categories.slice(0, 6).map((category) => (
+            {categories.slice(0, 6).map((category: Category) => (
               <CategoryCard
                 key={category._id}
                 title={category.title}
-                description={category.description}
+                description={category.description || ""}
                 image={category.image ? urlFor(category.image).url() : "/placeholder.svg"}
                 href={`/categoria/${category.slug.current}`}
               />
@@ -122,15 +142,15 @@ export default async function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuredArticles.map((article) => (
+            {featuredArticles.map((article: Article) => (
               <FeaturedArticle
                 key={article._id}
                 title={article.title}
-                excerpt={article.excerpt}
+                excerpt={article.excerpt || ""}
                 image={article.mainImage ? urlFor(article.mainImage).url() : "/placeholder.svg"}
-                category={article.categories[0]?.title || "Geral"}
+                category={article.categories?.[0]?.title || "Geral"}
                 href={`/artigos/${article.slug.current}`}
-                expertValidated={article.expertValidated}
+                expertValidated={article.expertValidated || false}
                 expertName={article.expert?.name}
                 expertRole={article.expert?.role}
               />

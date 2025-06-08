@@ -2,6 +2,15 @@ import { Metadata } from 'next';
 import { client, urlFor, categoriesQuery } from '@/lib/sanity';
 import CategoryCard from '@/components/home/category-card';
 
+// Define Category interface
+interface Category {
+  _id: string;
+  title: string;
+  description?: string;
+  image?: any;
+  slug: { current: string };
+}
+
 export const metadata: Metadata = {
   title: 'Categorias',
   description: 'Explore nosso conteúdo organizado por temas como alimentação, saúde, comportamento e muito mais.',
@@ -31,11 +40,11 @@ export default async function CategoriesPage() {
       <section className="py-16">
         <div className="container-custom">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {categories.map((category) => (
+            {categories.map((category: Category) => (
               <CategoryCard
                 key={category._id}
                 title={category.title}
-                description={category.description}
+                description={category.description || ""}
                 image={category.image ? urlFor(category.image).url() : "/placeholder.svg"}
                 href={`/categoria/${category.slug.current}`}
               />

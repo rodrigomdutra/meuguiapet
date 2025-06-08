@@ -13,6 +13,18 @@ interface CategoryPageProps {
   }
 }
 
+// Define Article interface
+interface Article {
+  _id: string;
+  title: string;
+  excerpt?: string;
+  mainImage?: any;
+  categories?: { title: string }[];
+  slug: { current: string };
+  expertValidated?: boolean;
+  expert?: { name?: string; role?: string };
+}
+
 async function getCategory(slug: string) {
   return await client.fetch(categoryBySlugQuery, { slug })
 }
@@ -84,15 +96,15 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
           {articles.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {articles.map((article) => (
+              {articles.map((article: Article) => (
                 <FeaturedArticle
                   key={article._id}
                   title={article.title}
-                  excerpt={article.excerpt}
+                  excerpt={article.excerpt || ""}
                   image={article.mainImage ? urlFor(article.mainImage).url() : "/placeholder.svg"}
-                  category={article.categories[0]?.title || "Geral"}
+                  category={article.categories?.[0]?.title || "Geral"}
                   href={`/artigos/${article.slug.current}`}
-                  expertValidated={article.expertValidated}
+                  expertValidated={article.expertValidated || false}
                   expertName={article.expert?.name}
                   expertRole={article.expert?.role}
                 />
