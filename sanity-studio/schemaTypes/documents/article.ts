@@ -17,7 +17,7 @@ export default defineType({
       type: 'slug',
       options: {
         source: 'title',
-        maxLength: 96,
+        maxLength: 200,
       },
       validation: (Rule) => Rule.required(),
     }),
@@ -26,7 +26,7 @@ export default defineType({
       title: 'Resumo',
       type: 'text',
       rows: 3,
-      description: 'Um breve resumo do artigo que aparecerá nos resultados de busca e compartilhamentos sociais',
+      description: 'Um breve resumo do artigo para exibição em listagens',
       validation: (Rule) => Rule.max(160).warning('O resumo não deve exceder 160 caracteres para SEO'),
     }),
     defineField({
@@ -74,7 +74,7 @@ export default defineType({
           {title: 'Répteis', value: 'Répteis'},
           {title: 'Outros', value: 'Outros'},
         ],
-        layout: 'tags',
+        layout: 'list',
       },
     }),
     defineField({

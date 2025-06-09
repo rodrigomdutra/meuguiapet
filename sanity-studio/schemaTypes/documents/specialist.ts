@@ -34,19 +34,33 @@ export default defineType({
           type: 'string',
           title: 'Texto alternativo',
           description: 'Importante para SEO e acessibilidade',
+          validation: (Rule) => Rule.required(),
         },
       ],
     }),
     defineField({
       name: 'bio',
       title: 'Biografia',
-      type: 'blockContent',
+      type: 'array',
+      of: [
+        {
+          type: 'block',
+          styles: [
+            {title: 'Normal', value: 'normal'},
+            {title: 'H3', value: 'h3'},
+            {title: 'H4', value: 'h4'},
+          ],
+          lists: [
+            {title: 'Bullet', value: 'bullet'},
+            {title: 'Numbered', value: 'number'},
+          ],
+        },
+      ],
     }),
     defineField({
       name: 'shortBio',
       title: 'Biografia curta',
-      type: 'text',
-      rows: 3,
+      type: 'string',
       description: 'Uma breve descrição para listagens e cards (máximo 160 caracteres)',
       validation: (Rule) => Rule.max(160).warning('A biografia curta não deve exceder 160 caracteres'),
     }),
@@ -54,7 +68,7 @@ export default defineType({
       name: 'crmv',
       title: 'CRMV',
       type: 'string',
-      description: 'Número de registro no Conselho Regional de Medicina Veterinária',
+      description: 'Número do registro no Conselho Regional de Medicina Veterinária',
     }),
     defineField({
       name: 'experience',
@@ -86,21 +100,20 @@ export default defineType({
           {title: 'Répteis', value: 'Répteis'},
           {title: 'Outros', value: 'Outros'},
         ],
-        layout: 'tags',
+        layout: 'list',
       },
     }),
     defineField({
       name: 'displayInDirectory',
       title: 'Exibir no diretório',
       type: 'boolean',
-      description: 'Se marcado, este especialista será listado no diretório público',
+      description: 'Habilitar para exibir este especialista na lista pública',
       initialValue: true,
     }),
     defineField({
       name: 'acceptsNewPatients',
       title: 'Aceita novos pacientes',
       type: 'boolean',
-      description: 'Se marcado, indica que o especialista está aceitando novos pacientes',
       initialValue: true,
     }),
     defineField({
@@ -110,8 +123,9 @@ export default defineType({
       fields: [
         {
           name: 'email',
-          title: 'E-mail',
+          title: 'Email',
           type: 'string',
+          validation: (Rule) => Rule.email(),
         },
         {
           name: 'phone',
@@ -134,19 +148,16 @@ export default defineType({
           name: 'instagram',
           title: 'Instagram',
           type: 'string',
-          description: 'Nome de usuário no Instagram (sem @)',
         },
         {
           name: 'facebook',
           title: 'Facebook',
           type: 'url',
-          description: 'URL completa da página ou perfil no Facebook',
         },
         {
           name: 'linkedin',
           title: 'LinkedIn',
           type: 'url',
-          description: 'URL completa do perfil no LinkedIn',
         },
       ],
     }),
@@ -154,24 +165,15 @@ export default defineType({
       name: 'featured',
       title: 'Destacado',
       type: 'boolean',
-      description: 'Exibir este especialista na seção de destaques',
+      description: 'Marque para destacar este especialista na página inicial',
       initialValue: false,
     }),
   ],
   preview: {
     select: {
       title: 'name',
+      subtitle: 'shortBio',
       media: 'image',
-      crmv: 'crmv',
-      featured: 'featured',
-    },
-    prepare(selection) {
-      const {title, media, crmv, featured} = selection
-      return {
-        title,
-        subtitle: `${crmv ? `CRMV: ${crmv}` : 'Sem CRMV'} ${featured ? '⭐ Destacado' : ''}`,
-        media,
-      }
     },
   },
 }) 

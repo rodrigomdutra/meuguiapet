@@ -3,6 +3,19 @@ import type {StructureBuilder} from 'sanity/structure'
 // Define the singleton document types
 const SINGLETON_TYPES = ['siteSettings']
 
+// Define pet types for filtering
+const PET_TYPES = ['Cães', 'Gatos', 'Aves', 'Peixes', 'Roedores', 'Répteis', 'Outros']
+
+// Função para normalizar os IDs (remover acentos e caracteres especiais)
+const normalizeId = (str: string) => {
+  return str
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^\w\s]/g, '')
+    .replace(/\s+/g, '-')
+    .toLowerCase()
+}
+
 export const deskStructure = (S: StructureBuilder) =>
   S.list()
     .title('Conteúdo')
@@ -11,6 +24,7 @@ export const deskStructure = (S: StructureBuilder) =>
       S.listItem()
         .title('Configurações do Site')
         .icon(() => '⚙️')
+        .id('siteSettings-singleton')
         .child(
           S.editor()
             .id('siteSettings')
@@ -24,39 +38,26 @@ export const deskStructure = (S: StructureBuilder) =>
       S.listItem()
         .title('Artigos')
         .icon(() => '📄')
+        .id('articles-section')
         .child(
           S.list()
             .title('Artigos')
             .items([
               S.listItem()
                 .title('Todos os artigos')
+                .id('all-articles')
                 .child(
                   S.documentList()
                     .title('Todos os artigos')
                     .filter('_type == "article"')
-                    .defaultOrdering([{field: 'publishedAt', direction: 'desc'}])
                 ),
+              S.divider(),
               S.listItem()
-                .title('Artigos em destaque')
-                .child(
-                  S.documentList()
-                    .title('Artigos em destaque')
-                    .filter('_type == "article" && featured == true')
-                    .defaultOrdering([{field: 'publishedAt', direction: 'desc'}])
-                ),
-              S.listItem()
-                .title('Artigos revisados por especialistas')
-                .child(
-                  S.documentList()
-                    .title('Artigos revisados por especialistas')
-                    .filter('_type == "article" && isExpertReviewed == true')
-                    .defaultOrdering([{field: 'publishedAt', direction: 'desc'}])
-                ),
-              S.listItem()
-                .title('Por categoria')
+                .title('Artigos por categoria')
+                .id('articles-by-category')
                 .child(
                   S.documentTypeList('category')
-                    .title('Categorias')
+                    .title('Artigos por categoria')
                     .child(categoryId =>
                       S.documentList()
                         .title('Artigos')
@@ -64,80 +65,83 @@ export const deskStructure = (S: StructureBuilder) =>
                         .params({categoryId})
                     )
                 ),
+              S.divider(),
+              S.listItem()
+                .title('Artigos por tipo de pet')
+                .id('articles-by-pet-type')
+                .child(
+                  S.list()
+                    .title('Tipos de pet')
+                    .items(
+                      PET_TYPES.map(petType =>
+                        S.listItem()
+                          .title(petType)
+                          .id(`articles-pet-type-${normalizeId(petType)}`)
+                          .child(
+                            S.documentList()
+                              .title(`Artigos sobre ${petType}`)
+                              .filter('_type == "article" && $petType in petTypes')
+                              .params({petType})
+                          )
+                      )
+                    )
+                ),
+              S.divider(),
+              S.listItem()
+                .title('Artigos destacados')
+                .id('featured-articles')
+                .child(
+                  S.documentList()
+                    .title('Artigos destacados')
+                    .filter('_type == "article" && featured == true')
+                ),
             ])
         ),
 
       // Categories
       S.listItem()
         .title('Categorias')
-        .icon(() => '🏷️')
-        .child(
-          S.list()
-            .title('Categorias')
-            .items([
-              S.listItem()
-                .title('Todas as categorias')
-                .child(
-                  S.documentList()
-                    .title('Todas as categorias')
-                    .filter('_type == "category"')
-                    .defaultOrdering([{field: 'order', direction: 'asc'}])
-                ),
-              S.listItem()
-                .title('Categorias destacadas')
-                .child(
-                  S.documentList()
-                    .title('Categorias destacadas')
-                    .filter('_type == "category" && featured == true')
-                    .defaultOrdering([{field: 'order', direction: 'asc'}])
-                ),
-            ])
-        ),
+        .id('categories')
+        .child(S.documentTypeList('category').title('Categorias')),
 
       // Specialists
       S.listItem()
         .title('Especialistas')
-        .icon(() => '👩‍⚕️')
+        .icon(() => '👨‍⚕️')
+        .id('specialists-section')
         .child(
           S.list()
             .title('Especialistas')
             .items([
               S.listItem()
                 .title('Todos os especialistas')
+                .id('all-specialists')
                 .child(
                   S.documentList()
                     .title('Todos os especialistas')
                     .filter('_type == "specialist"')
                 ),
+              S.divider(),
               S.listItem()
-                .title('Especialistas destacados')
+                .title('Especialistas por tipo de pet')
+                .id('specialists-by-pet-type')
                 .child(
-                  S.documentList()
-                    .title('Especialistas destacados')
-                    .filter('_type == "specialist" && featured == true')
-                ),
-              S.listItem()
-                .title('Por especialidade')
-                .child(
-                  S.documentList()
-                    .title('Especialistas')
-                    .filter('_type == "specialist"')
-                    .defaultOrdering([{field: 'name', direction: 'asc'}])
-                    .menuItems([
-                      S.menuItem()
-                        .title('Filtrar por especialidade')
-                        .icon(() => '🔍')
-                        .action(() => {
-                          // This would typically be handled by a custom component
-                          // For now, it's just a placeholder
-                        }),
-                    ])
+                  S.list()
+                    .title('Tipos de pet')
+                    .items(
+                      PET_TYPES.map(petType =>
+                        S.listItem()
+                          .title(petType)
+                          .id(`specialists-pet-type-${normalizeId(petType)}`)
+                          .child(
+                            S.documentList()
+                              .title(`Especialistas em ${petType}`)
+                              .filter('_type == "specialist" && $petType in petExpertise')
+                              .params({petType})
+                          )
+                      )
+                    )
                 ),
             ])
         ),
-
-      // Filter out singleton types from the default document list
-      ...S.documentTypeListItems().filter(
-        listItem => !SINGLETON_TYPES.includes(listItem.getId() as string)
-      ),
     ]) 

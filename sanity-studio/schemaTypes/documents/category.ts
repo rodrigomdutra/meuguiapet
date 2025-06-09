@@ -58,25 +58,16 @@ export default defineType({
       description: 'Categorias com valores menores aparecem primeiro na listagem',
       initialValue: 100,
     }),
-    defineField({
-      name: 'featured',
-      title: 'Destacada',
-      type: 'boolean',
-      description: 'Exibir esta categoria na seção de destaques',
-      initialValue: false,
-    }),
   ],
   preview: {
     select: {
       title: 'title',
       media: 'icon',
-      featured: 'featured',
     },
     prepare(selection) {
-      const {title, media, featured} = selection
+      const {title, media} = selection
       return {
         title,
-        subtitle: featured ? '⭐ Destacada' : '',
         media,
       }
     },
