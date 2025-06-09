@@ -17,15 +17,44 @@ sanity-studio/
 ├── structure/             # Configuração da estrutura do desk
 │   └── deskStructure.ts   # Estrutura personalizada do desk
 ├── scripts/               # Scripts utilitários
+│   ├── import-content.sh  # Script para importar conteúdo de placeholder
+│   └── README.md          # Documentação dos scripts
 └── sanity.config.ts       # Configuração principal do Sanity
 ```
 
 ### Tipos de Documentos
 
 - **article**: Artigos de conteúdo
-- **category**: Categorias para organização de artigos
-- **specialist**: Especialistas veterinários
+- **category**: Categorias para organização de conteúdo
+- **specialist**: Especialistas e veterinários
 - **siteSettings**: Configurações globais do site (singleton)
+
+## Conteúdo de Placeholder
+
+Para facilitar o desenvolvimento e testes, este projeto inclui scripts para importar conteúdo de placeholder no Sanity Studio.
+
+### Como importar conteúdo de placeholder
+
+1. Certifique-se de que você está no diretório `sanity-studio`
+2. Execute o script de importação:
+
+```bash
+./scripts/import-content.sh
+```
+
+3. Se você não tiver um token do Sanity configurado, o script irá guiá-lo na criação de um.
+
+4. Após a importação, você terá acesso a:
+   - Configurações do site
+   - Categorias: Cães, Gatos, Alimentação, Saúde
+   - Especialistas: Dra. Ana Silva, Dr. Carlos Santos
+   - Artigos: Guia de Alimentação para Cães, Comportamento dos Gatos, Primeiros Socorros
+
+### Notas importantes
+
+- O conteúdo de placeholder substitui documentos existentes com os mesmos IDs
+- As referências de imagem precisam ser substituídas por assets reais
+- Para ambientes de produção, considere criar um dataset separado para testes
 
 ## Características Implementadas
 
