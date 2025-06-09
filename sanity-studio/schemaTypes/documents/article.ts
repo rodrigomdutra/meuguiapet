@@ -53,6 +53,53 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'featured',
+      title: 'Destaque',
+      type: 'boolean',
+      description: 'Marque para exibir este artigo na seção de destaques da home',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'petTypes',
+      title: 'Tipos de pets',
+      type: 'array',
+      of: [{type: 'string'}],
+      options: {
+        list: [
+          {title: 'Cães', value: 'Cães'},
+          {title: 'Gatos', value: 'Gatos'},
+          {title: 'Aves', value: 'Aves'},
+          {title: 'Peixes', value: 'Peixes'},
+          {title: 'Roedores', value: 'Roedores'},
+          {title: 'Répteis', value: 'Répteis'},
+          {title: 'Outros', value: 'Outros'},
+        ],
+        layout: 'tags',
+      },
+    }),
+    defineField({
+      name: 'keywords',
+      title: 'Palavras-chave',
+      type: 'array',
+      of: [{type: 'string'}],
+      options: {
+        layout: 'tags',
+      },
+    }),
+    defineField({
+      name: 'searchIntent',
+      title: 'Intenção de busca',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Informacional', value: 'informational'},
+          {title: 'Navegacional', value: 'navigational'},
+          {title: 'Transacional', value: 'transactional'},
+          {title: 'Comercial', value: 'commercial'},
+        ],
+      },
+    }),
+    defineField({
       name: 'publishedAt',
       title: 'Data de publicação',
       type: 'datetime',
@@ -114,12 +161,13 @@ export default defineType({
       category: 'category.title',
       media: 'mainImage',
       isReviewed: 'isExpertReviewed',
+      isFeatured: 'featured',
     },
     prepare(selection) {
-      const {title, category, media, isReviewed} = selection
+      const {title, category, media, isReviewed, isFeatured} = selection
       return {
         title,
-        subtitle: `${category || 'Sem categoria'} ${isReviewed ? '✓ Revisado' : ''}`,
+        subtitle: `${category || 'Sem categoria'} ${isReviewed ? '✓ Revisado' : ''} ${isFeatured ? '⭐ Destaque' : ''}`,
         media,
       }
     },

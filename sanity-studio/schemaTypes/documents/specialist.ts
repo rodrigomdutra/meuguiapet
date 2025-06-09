@@ -57,6 +57,12 @@ export default defineType({
       description: 'Número de registro no Conselho Regional de Medicina Veterinária',
     }),
     defineField({
+      name: 'experience',
+      title: 'Anos de experiência',
+      type: 'number',
+      validation: (Rule) => Rule.min(0).max(100),
+    }),
+    defineField({
       name: 'specialties',
       title: 'Especialidades',
       type: 'array',
@@ -64,6 +70,38 @@ export default defineType({
       options: {
         layout: 'tags',
       },
+    }),
+    defineField({
+      name: 'petExpertise',
+      title: 'Experiência com tipos de pets',
+      type: 'array',
+      of: [{type: 'string'}],
+      options: {
+        list: [
+          {title: 'Cães', value: 'Cães'},
+          {title: 'Gatos', value: 'Gatos'},
+          {title: 'Aves', value: 'Aves'},
+          {title: 'Peixes', value: 'Peixes'},
+          {title: 'Roedores', value: 'Roedores'},
+          {title: 'Répteis', value: 'Répteis'},
+          {title: 'Outros', value: 'Outros'},
+        ],
+        layout: 'tags',
+      },
+    }),
+    defineField({
+      name: 'displayInDirectory',
+      title: 'Exibir no diretório',
+      type: 'boolean',
+      description: 'Se marcado, este especialista será listado no diretório público',
+      initialValue: true,
+    }),
+    defineField({
+      name: 'acceptsNewPatients',
+      title: 'Aceita novos pacientes',
+      type: 'boolean',
+      description: 'Se marcado, indica que o especialista está aceitando novos pacientes',
+      initialValue: true,
     }),
     defineField({
       name: 'contactInfo',
